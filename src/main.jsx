@@ -29,13 +29,21 @@ const providers = [
   { id: 'ivy', name: 'Ivy', image: 'https://github.com/user-attachments/assets/1632ea6d-14bb-43be-b50c-d888be0d5a10' }
 ];
 
-function navigate(path) { window.history.pushState({}, '', path); window.dispatchEvent(new PopStateEvent('popstate')); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+function navigateToSection(id) {
+  if (window.location.pathname !== '/') {
+    window.history.pushState({}, '', `/#${id}`);
+    window.dispatchEvent(new PopStateEvent('popstate'));
+    window.setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' }), 0);
+    return;
+  }
+  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+}
 function Logo({ compact = false }) { return <a className={`brand ${compact ? 'brand--compact' : ''}`} href="/" onClick={(event) => { event.preventDefault(); navigate('/'); }}><img src="https://github.com/user-attachments/assets/998b1a23-da66-440c-a42b-8143d428328e" alt="Happy Ending Logo" /></a>; }
-function Button({ children, className = '', onClick, href, type = 'button' }) { if (href) return <a className={`button ${className}`} href={href}>{children}</a>; return <button className={`button ${className}`} onClick={onClick} type={type}>{children}</button>; }
+function Button({ children, className = '', onClick, href, type = 'button' }) { if (href) return <a className={`button ${className}`} href={href}>{children}</a>; return <button className={`button ${className}`} type={type} onClick={onClick}>{children}</button>; }
 function Header() {
   const [open, setOpen] = useState(false);
   const links = [['Services', 'services'], ['About', 'about'], ['Contact', 'contact']];
-  return <header className="site-header"><div className="container header-inner"><Logo /><nav className={open ? 'nav nav--open' : 'nav'}><a href="#home" onClick={() => setOpen(false)}>Home</a>{links.map(([label, id]) => <a key={id} href={`#${id}`} onClick={() => setOpen(false)}>{label}</a>)}<a className="nav-wa" href={waLink} target="_blank" rel="noopener noreferrer">Chat on WhatsApp</a></nav><button className="menu-toggle" onClick={() => setOpen(!open)}>Menu</button></div></header>;
+  return <header className="site-header"><div className="container header-inner"><Logo /><nav className={open ? 'nav nav--open' : 'nav'}><a href="/" onClick={(event) => { event.preventDefault(); setOpen(false); navigate('/'); }}>Home</a>{links.map(([label, id]) => <a key={id} href={`/#${id}`} onClick={(event) => { event.preventDefault(); setOpen(false); navigateToSection(id); }}>{label}</a>)}<a className="nav-wa" href={waLink} target="_blank" rel="noopener noreferrer">Chat on WhatsApp</a><a href="/booking" onClick={(event) => { event.preventDefault(); setOpen(false); navigate('/booking'); }}>Booking</a><Button className="button--small" onClick={() => { setOpen(false); navigate('/booking'); }}>Book Now</Button></nav><button className="menu-toggle" aria-label="Toggle navigation" onClick={() => setOpen(!open)}>Menu</button></div></header>;
 }
 function SectionHeading({ eyebrow, title, copy, light = false }) { return <div className={`section-heading ${light ? 'section-heading--light' : ''}`}><span className="eyebrow">{eyebrow}</span><h2>{title}</h2>{copy && <p>{copy}</p>}</div>; }
 function ServiceCard({ service }) { return <article className="service-card"><div className="service-image"><img loading="lazy" src={asset(service.image)} alt={`${service.name} treatment at Happy Ending Massage Spa`} /></div><div className="service-text"><h3>{service.name}</h3><p>{service.description}</p><p className="service-price">{money(service.price)}</p><Button href={`/booking?service=${service.id}`}>Book now</Button></div></article>; }
