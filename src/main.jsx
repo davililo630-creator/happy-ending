@@ -18,10 +18,15 @@ const money = (value) => `KSh ${value.toLocaleString('en-KE')}`;
 const asset = (name) => `/assets/images/${name}`;
 const waLink = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent('Hello Happy Ending Massage Spa, I would like to make an enquiry.')}`;
 const providers = [
-  { id: 'amanda', name: 'Amanda', image: 'about-spa.jpg' },
-  { id: 'brianna', name: 'Brianna', image: 'hero-spa.jpg' },
-  { id: 'carol', name: 'Carol', image: 'normal.jpg' },
-  { id: 'diana', name: 'Diana', image: 'sensual.jpg' }
+  { id: 'amanda', name: 'Amanda', image: 'swedish.jpg' },
+  { id: 'brianna', name: 'Brianna', image: 'normal.jpg' },
+  { id: 'carol', name: 'Carol', image: 'sensual.jpg' },
+  { id: 'diana', name: 'Diana', image: 'sports.jpg' },
+  { id: 'elena', name: 'Elena', image: 'thai.jpg' },
+  { id: 'faith', name: 'Faith', image: 'tantric.jpg' },
+  { id: 'grace', name: 'Grace', image: 'deep-tissue.jpg' },
+  { id: 'hannah', name: 'Hannah', image: 'reflexology.jpg' },
+  { id: 'ivy', name: 'Ivy', image: 'body-to-body.jpg' }
 ];
 
 function navigate(path) { window.history.pushState({}, '', path); window.dispatchEvent(new PopStateEvent('popstate')); window.scrollTo({ top: 0, behavior: 'smooth' }); }
@@ -65,8 +70,9 @@ function BookingFlow() {
       const response = await fetch('/api/bookings', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...form, service, price: current.price }) });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || 'Unable to save booking');
+      const completedMessage = `Hello Happy Ending Massage Spa, I would like to book a session.\n\nName: ${form.name}\nPhone: ${form.phone}\nEmail: ${form.email || 'None'}\nTreatment: ${current.name}\nPreferred therapist: ${provider.name}\nPrice: ${money(current.price)}\nDate: ${form.date}\nTime: ${form.time}\nGuests: ${form.guests}\nNotes: ${form.notes || 'None'}\nReference: ${data.reference}`;
       const message = `Hello Happy Ending Massage Spa, I would like to book a session.%0A%0AName: ${encodeURIComponent(form.name)}%0APhone: ${encodeURIComponent(form.phone)}%0ATreatment: ${encodeURIComponent(current.name)}%0APreferred therapist: ${encodeURIComponent(provider.name)}%0ADate: ${encodeURIComponent(form.date)}%0ATime: ${encodeURIComponent(form.time)}%0AGuests: ${encodeURIComponent(form.guests)}%0ANotes: ${encodeURIComponent(form.notes || 'None')}%0AReference: ${encodeURIComponent(data.reference)}`;
-      window.location.href = `https://wa.me/${WA_NUMBER}?text=${message}`;
+      window.location.href = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(completedMessage)}`;
       setState({ status: 'success', reference: data.reference });
     } catch (error) { setState({ status: 'error', reference: error.message }); }
   }
