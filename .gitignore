@@ -1,0 +1,6 @@
+node_modules/
+dist/
+bookings.sqlite
+bookings.sqlite-shm
+bookings.sqlite-wal
+.env

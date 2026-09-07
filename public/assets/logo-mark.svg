@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-label="Noir Lotus Spa logo">
+  <rect width="96" height="96" rx="22" fill="#110c12"/>
+  <path d="M48 19c10 16 23 20 23 34 0 13-10 24-23 24S25 66 25 53c0-14 13-18 23-34Z" fill="none" stroke="#b47c8d" stroke-width="2"/>
+  <path d="M48 28c-5 13-12 18-12 27 0 7 5 13 12 13s12-6 12-13c0-9-7-14-12-27Z" fill="#711f42" opacity=".9"/>
+  <path d="M48 20v49M31 54c11-3 23-3 34 0" fill="none" stroke="#e5c3c9" stroke-width="1.5" opacity=".8"/>
+</svg>
